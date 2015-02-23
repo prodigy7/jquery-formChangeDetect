@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>jQuery FormChangeDetect Plugin Test</title>
+
+	<script type="text/javascript" src="jquery-2.1.3.min.js"></script>
+	<script type="text/javascript" src="../jquery.formChangeDetect.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('form').formChangeDetect({
+				debug: true,
+				onElementChange: function(elem, state) {
+					$('input[name="lastChanged"]').val($(elem).attr('name'));
+
+					var elementsChanged = '';
+					$('form').formChangeDetect().getChanged().each(function() {
+						elementsChanged += '|' + $(this).attr('name');
+					});
+					
+					$('textarea[name="elementsChanged"]').val(elementsChanged);
+				},
+				onStatusChange: function(form, state) {
+					$('input[name="formStatus"]').val(state);
+				},
+			});
+
+			$('form').formChangeDetect({
+				onElementChange: function(elem, state) {
+					alert("OK");
+				}
+			});
+		});
+	</script>
+</head>
+<body>
+	<form>
+		<p><input type="text" value="Test text" name="text" /></p>
+		<p><select name="select-one">
+			<option selected="selected" value="1">Option 1</option>
+			<option value="2">Option 2</option>
+		</select></p>
+		<p><select name="select-multiple" size="5" multiple>
+			<option selected="selected" value="1">Option 1</option>
+			<option value="2">Option 2</option>
+		</select></p>
+		<p><label><input type="radio" checked="checked" value="Test radio 1" name="radio" />Test radio 1</label>
+		<label><input type="radio" value="Test radio 2" name="radio" />Test radio 2</label></p>
+		<p><label><input type="checkbox" selected="selected" value="Test select 1" name="checkbox2" />Test select 1</label>
+		<label><input type="checkbox" value="Test select 2" name="checkbox1" />Test select 2</label></p>
+		<p><textarea name="textarea">Test textarea</textarea></p>
+	</form>
+	<hr />
+	<p><label>Formular changed: <input type="text" disabled="disabled" name="formStatus" value="false" /></label></p>
+	<p><label>Last changed field: <input type="text" disabled="disabled" name="lastChanged" /></label></p>
+	<p><label>Changed fields: <textarea disabled="disabled" name="elementsChanged" /></textarea></p>
+</body>
+</html>
