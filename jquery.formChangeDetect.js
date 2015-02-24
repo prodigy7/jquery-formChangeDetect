@@ -79,113 +79,123 @@ $.extend($.formChangeDetect, {
 
 			// Apply checksums
 			$.formChangeDetect.elementRange(this).each(function() {
-
-				switch(this.type) {
-					case 'text':
-					case 'password':
-					case 'number':
-					case 'search':
-					case 'tel':
-					case 'url':
-					case 'email':
-					case 'datetime':
-					case 'date':
-					case 'month':
-					case 'week':
-					case 'time':
-					case 'datetime-local':
-					case 'range':
-					case 'color':
-					case 'textarea':
-					case 'select-one':
-					case 'select-multiple':
-						$(this).data('hashcode', $.formChangeDetect.hashcode($.formChangeDetect.getValue($(this))));
-						$(this).data('hasChanged', false);
-						$(this).bind('input paste, keyUp, change', function() {
-
-							var changeState = null;
-							var onElementChangeEvent = false;
-							var onStatusChangeEvent = false;
-
-							if($.formChangeDetect.hasChanged(this)) {
-								if($(this).data('hasChanged') != true) {
-									$(this).data('hasChanged', true);
-									$.formChangeDetect.debug(formChangeDetect, 'Value has changed', 'info');
-
-									onElementChangeEvent = true;
-								}
-							} else {
-								if($(this).data('hasChanged') == true) {
-									$(this).data('hasChanged', false);
-									$.formChangeDetect.debug(formChangeDetect, 'Value has not changed', 'info');
-
-									onElementChangeEvent = true;
-								}
-							}
-
-							if(onElementChangeEvent) {
-								if(typeof(formChangeDetect.settings.onElementChange) == 'function') {
-									formChangeDetect.settings.onElementChange(this, $(this).data('hasChanged'));
-								}
-							}
-
-							if($(formChangeDetect).data('hasChanged') != formChangeDetect.hasChanged()) {
-								$(formChangeDetect).data('hasChanged', formChangeDetect.hasChanged());
-
-								if(typeof(formChangeDetect.settings.onStatusChange) == 'function') {
-									formChangeDetect.settings.onStatusChange(formChangeDetect, $(formChangeDetect).data('hasChanged'));
-								}
-							}
-						});
-					break;
-
-					case 'checkbox':
-					case 'radio':
-						$(this).data('hashcode', $(this).is(':checked'));
-						$(this).data('hasChanged', false);
-						$(this).bind('change', function() {
-
-							var changeState = null;
-							var onElementChangeEvent = false;
-							var onStatusChangeEvent = false;
-
-							if($.formChangeDetect.hasChanged(this)) {
-								if($(this).data('hasChanged') != true) {
-									$(this).data('hasChanged', true);
-									$.formChangeDetect.debug(formChangeDetect, 'Value has changed', 'info');
-
-									onElementChangeEvent = true;
-								}
-							} else {
-								if($(this).data('hasChanged') == true) {
-									$(this).data('hasChanged', false);
-									$.formChangeDetect.debug(formChangeDetect, 'Value has not changed', 'info');
-
-									onElementChangeEvent = true;
-								}
-							}
-
-							if(onElementChangeEvent) {
-								if(typeof(formChangeDetect.settings.onElementChange) == 'function') {
-									formChangeDetect.settings.onElementChange(this, $(this).data('hasChanged'));
-								}
-							}
-
-							if($(formChangeDetect).data('hasChanged') != formChangeDetect.hasChanged()) {
-								$(formChangeDetect).data('hasChanged', formChangeDetect.hasChanged());
-
-								if(typeof(formChangeDetect.settings.onStatusChange) == 'function') {
-									formChangeDetect.settings.onStatusChange(formChangeDetect, $(formChangeDetect).data('hasChanged'));
-								}
-							}
-						});
-					break;
-
-					default:
-						$.formChangeDetect.debug(formChangeDetect, 'Type "' + this.type + '" currently not handled (1)', 'warn');
-					break;
-				}
+				formChangeDetect.addEventHandler(this);
 			});
+		},
+
+		addEventHandler: function(element) {
+
+			var formChangeDetect = this;
+
+			switch(element.type) {
+				case 'text':
+				case 'password':
+				case 'number':
+				case 'search':
+				case 'tel':
+				case 'url':
+				case 'email':
+				case 'datetime':
+				case 'date':
+				case 'month':
+				case 'week':
+				case 'time':
+				case 'datetime-local':
+				case 'range':
+				case 'color':
+				case 'textarea':
+				case 'select-one':
+				case 'select-multiple':
+					$(element).data('hashcode', $.formChangeDetect.hashcode($.formChangeDetect.getValue($(element))));
+					$(element).data('hasChanged', false);
+					$(element).bind('input paste, keyUp, change', function() {
+
+						var changeState = null;
+						var onElementChangeEvent = false;
+						var onStatusChangeEvent = false;
+
+						if($.formChangeDetect.hasChanged(element)) {
+							if($(element).data('hasChanged') != true) {
+								$(element).data('hasChanged', true);
+								$.formChangeDetect.debug(formChangeDetect, 'Value has changed', 'info');
+
+								onElementChangeEvent = true;
+							}
+						} else {
+							if($(element).data('hasChanged') == true) {
+								$(element).data('hasChanged', false);
+								$.formChangeDetect.debug(formChangeDetect, 'Value has not changed', 'info');
+
+								onElementChangeEvent = true;
+							}
+						}
+
+						if(onElementChangeEvent) {
+							if(typeof(formChangeDetect.settings.onElementChange) == 'function') {
+								formChangeDetect.settings.onElementChange(element, $(element).data('hasChanged'));
+							}
+						}
+
+						if($(formChangeDetect).data('hasChanged') != formChangeDetect.hasChanged()) {
+							$(formChangeDetect).data('hasChanged', formChangeDetect.hasChanged());
+
+							if(typeof(formChangeDetect.settings.onStatusChange) == 'function') {
+								formChangeDetect.settings.onStatusChange(formChangeDetect, $(formChangeDetect).data('hasChanged'));
+							}
+						}
+
+						return(true);
+					});
+				break;
+
+				case 'checkbox':
+				case 'radio':
+					$(element).data('hashcode', $(element).is(':checked'));
+					$(element).data('hasChanged', false);
+					$(element).bind('change', function() {
+
+						var changeState = null;
+						var onElementChangeEvent = false;
+						var onStatusChangeEvent = false;
+
+						if($.formChangeDetect.hasChanged(element)) {
+							if($(element).data('hasChanged') != true) {
+								$(element).data('hasChanged', true);
+								$.formChangeDetect.debug(formChangeDetect, 'Value has changed', 'info');
+
+								onElementChangeEvent = true;
+							}
+						} else {
+							if($(element).data('hasChanged') == true) {
+								$(element).data('hasChanged', false);
+								$.formChangeDetect.debug(formChangeDetect, 'Value has not changed', 'info');
+
+								onElementChangeEvent = true;
+							}
+						}
+
+						if(onElementChangeEvent) {
+							if(typeof(formChangeDetect.settings.onElementChange) == 'function') {
+								formChangeDetect.settings.onElementChange(element, $(element).data('hasChanged'));
+							}
+						}
+
+						if($(formChangeDetect).data('hasChanged') != formChangeDetect.hasChanged()) {
+							$(formChangeDetect).data('hasChanged', formChangeDetect.hasChanged());
+
+							if(typeof(formChangeDetect.settings.onStatusChange) == 'function') {
+								formChangeDetect.settings.onStatusChange(formChangeDetect, $(formChangeDetect).data('hasChanged'));
+							}
+						}
+
+						return(true);
+					});
+				break;
+
+				default:
+					$.formChangeDetect.debug(formChangeDetect, 'Type "' + element.type + '" currently not handled (1)', 'warn');
+				break;
+			}
 		},
 
 		hasChanged: function() {
