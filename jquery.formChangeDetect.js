@@ -13,24 +13,24 @@
 $.extend($.fn, {
 
 	// http://docs.jquery.com/Plugins/Validation/validate
-	formChangeDetect: function( options ) {
+	formChangeDetect: function(options) {
 
 		// if nothing is selected, return nothing; can't chain anyway
-		if ( !this.length ) {
-			if ( options && options.debug && window.console ) {
-				console.warn( "Nothing selected, can't detect anything, returning nothing." );
+		if(!this.length) {
+			if(options && options.debug && window.console) {
+				console.warn("Nothing selected, can't detect anything, returning nothing.");
 			}
 			return;
 		}
 
 		// check if a validator for this form was already created
-		var formChangeDetect = $.data( this[0], "formChangeDetect" );
-		if ( formChangeDetect ) {
+		var formChangeDetect = $.data(this[0], "formChangeDetect");
+		if (formChangeDetect) {
 			return formChangeDetect;
 		}
 
-		formChangeDetect = new $.formChangeDetect( options, this[0] );
-		$.data( this[0], "formChangeDetect", formChangeDetect );
+		formChangeDetect = new $.formChangeDetect(options, this[0]);
+		$.data(this[0], "formChangeDetect", formChangeDetect);
 
 		return formChangeDetect;
 	},
@@ -52,7 +52,7 @@ $.extend($.fn, {
 
 // constructor for validator
 $.formChangeDetect = function( options, form ) {
-	this.settings = $.extend( true, {}, $.formChangeDetect.defaults, options );
+	this.settings = $.extend(true, {}, $.formChangeDetect.defaults, options);
 	this.currentForm = form;
 	this.init();
 };
@@ -66,14 +66,13 @@ $.extend($.formChangeDetect, {
 		onStatusChange: function() {},
 	},
 
-	setDefaults: function( settings ) {
-		$.extend( $.formChangeDetect.defaults, settings );
+	setDefaults: function(settings) {
+		$.extend($.formChangeDetect.defaults, settings);
 	},
 
 	prototype: {
 
 		init: function() {
-			console.log(this);
 
 			var formChangeDetect = this;
 			$(formChangeDetect).data('hasChanged', false);
@@ -204,7 +203,7 @@ $.extend($.formChangeDetect, {
 		getChanged: function() {
 			form = this;
 
-			return($.formChangeDetect.elementRange(form).filter(function(){
+			return($.formChangeDetect.elementRange(form).filter(function() {
 				return /true/i.test($(this).data("hasChanged"));
 			}));
 		},
