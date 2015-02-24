@@ -1,4 +1,4 @@
-# Form change detect jQuery Plugin
+# jQuery Form change detect Plugin
 Plugin for detecting easily changed formulares. Example of use could be a save button which is only enabled if changes are done in form fields.
 
 ## Quick usage example:
